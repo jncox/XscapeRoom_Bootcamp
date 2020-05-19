@@ -88,43 +88,6 @@ In this brief exercise, you will experience how IT generalists can provision and
 
      <center><iframe width="640" height="360" src="https://www.youtube.com/embed/hA4l1UHZO2w?rel=0&amp;showinfo=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
 
-Provisioning a New Network
-++++++++++++++++++++++++++
-
-In this exercise Carol will use Prism to configure a new VM Network for the cluster.
-
-AHV leverages Open vSwitch (OVS) for all VM networking. OVS is an open source software switch implemented in the Linux kernel and designed to work in a multiserver virtualization environment. Each AHV server maintains an OVS instance, and all OVS instances combine to form a single logical switch. Each node is typically uplinked to a physical switch port trunked/tagged to multiple VLANs, which will be exposed as virtual networks.
-
-#. Select **VM** from the **Prism Element** drop down menu.
-
-#. Select **Network Config**.
-
-   .. figure:: images/9.png
-
-#. Click **+ Create Network** and fill out the following fields, using the **User** specific network details in :ref:`clusterassignments`:
-
-   - **Name** - *Initials*-Network_IPAM
-   - **VLAN ID** - A value (< 4096) other than your **Primary** or **Secondary** network VLANs
-   - Select **Enable IP Address Management**
-   - **Network IP Address / Prefix Length** - 10.0.0.0/24
-   - **Gateway** - 10.0.0.1
-   - Do not select **Configure Domain Settings**
-   - Select **+ Create Pool**
-   - **Start Address** - 10.0.0.100
-   - **End Address** - 10.0.0.150
-   - Click **Submit**
-
-   .. figure:: images/network_config_03.png
-
-   Note that AHV is capable of providing integrated DHCP services (IPAM), allowing virtualization administrators to allocate IPs to VMs from a configured pool, or easily specifying IPs as DHCP reservations when adding virtual NICs to VMs.
-
-#. Click **Save**.
-
-   The configured virtual network will now be available across all nodes within the cluster. Virtual networks in AHV behave like Distributed Virtual Switches in ESXi, meaning you do not need to configure the same settings on each individual host within the cluster.
-
-#. Close the **Network Configuration** window.
-
-   You're done - simple stuff!
 
 Responding to VM Creation Requests
 ++++++++++++++++++++++++++++++++++
@@ -547,80 +510,6 @@ Carol to the rescue - she encourages Dan to follow the exercise below to allow h
 
    Instead of filing tickets and waiting days, Dan was able to get his test environment up and running before lunch. Instead of drowning his sorrows in Ben & Jerry's tonight, Dan is going to go to the gym, and eat vegetables with his dinner. Go, Dan!
 
-Operator Workflows
-++++++++++++++++++
-
-Meet Ronald and Elise. Ronald works as a Level 3 engineering with the corporate IT helpdesk, and Elise works as a QA intern on the Fiesta team. In the brief exercise below you will explore and contrast their levels of access based on the roles defined and categories assigned by Carol.
-
-#. Log out of the **devuser01** account and log back into **Prism Central** with Ronald's credentials:
-
-   - **User Name** - operator01@ntnxlab.local
-   - **Password** - nutanix/4u
-
-#. As expected, all VMs with **Environment** category values assigned are available. Note that you have no ability to **Create** or **Delete** VMs, but the abilities to power manage and change VM configurations are present.
-
-   What else can be accessed by this user? Is Calm available?
-
-   .. figure:: images/42.png
-
-#. Log out of the **operator01** account and log back into **Prism Central** with Elise's credentials:
-
-   - **User Name** - operator02@ntnxlab.local
-   - **Password** - nutanix/4u
-
-#. Note that only resources tagged with the *Initials*\ **-Team: Fiesta** category are available to be managed.
-
-   .. figure:: images/43.png
-
-#. Elise receives an alert that memory utilization is high on the **nodereact** VM. Update the configuration to increase memory and power cycle the VM.
-
-Using Entity Browser, Search, and Analysis
-++++++++++++++++++++++++++++++++++++++++++
-
-Now that Carol has freed up time to focus on replacing additional legacy infrastructure, it is important for her to understand how a large, diverse environment can all be managed and monitored via Prism Central. In the exercise below you will explore common workflows for working with entities across multiple clusters in a Nutanix environment.
-
-#. Log out of the **operator02** account and log back into **Prism Central** with Carol's AD credentials:
-
-   - **User Name** - adminuser01@ntnxlab.local
-   - **Password** - nutanix/4u
-
-#. Open :fa:`bars` **> Virtual Infrastructure > VMs**. Prism Central's **Entity Browser** provides a robust UI for sorting, searching, and viewing entities such as VMs, Images, Clusters, Hosts, Alerts, and more!
-
-#. Select **Filters** and explore the available options. Specify the following example filters, and verify the corresponding box is checked:
-
-   - **Name** - Contains *Initials*
-   - **Categories** - *Initials*\ -Team: Fiesta
-   - **Hypervisor** - AHV
-   - **Power State** - On
-
-   Take notice of other helpful filters available such as VM efficiency, memory usage, and storage latency.
-
-#. Select all of the filtered VMs and click the **Label** icon to apply a custom label to your group of filtered VMs (e.g. *Initials* AHV Fiesta VMs).
-
-   .. figure:: images/44.png
-
-#. Clear all filters and select your new label to quickly return to your previously identified VMs. Labels provide an additional means of taxonomy for entities, without tying them to specific policies as is with categories.
-
-   .. figure:: images/45.png
-
-#. Select the **Focus** dropdown to access different out of box views. Which view should be used to understand if your VMs are included as part of a DR plan?
-
-#. Click **Focus > + Add Custom** to create a VM view (e.g. *XYZ-VM-View*) that displays **CPU Usage**, **CPU Ready Time**, **IO Latency**, **Working Set Size Read**, and **Working Set Size Write**. Such a view could be used to helping to spot VM performance problems.
-
-   .. figure:: images/46.png
-
-#. To fully appreciate the power of Prism Central for searching, sorting, and analyzing entities, view the following brief video:
-
-   .. raw:: html
-
-     <center><iframe width="640" height="360" src="https://www.youtube.com/embed/HXWCExTlXm4?rel=0&amp;showinfo=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></center>
-
-Improved Life Cycle Management
-++++++++++++++++++++++++++++++
-
-While not a daily activity, Carol previously dedicated as much as 40% of her time planning and executing software and firmware updates to legacy infrastructure, leaving little time for innovation. In her Nutanix environments, Carol is leveraging the rules engine and rich automation in Lifecycle Manager (LCM) to take the hassle out of planning and applying her infrastructure software updates.
-
-Unfortunately in a shared cluster environment, you're not able to test LCM directly. To become more familiar with LCM's capabilities and ease of use, click through each of the interactive demos available below.
 
 5.11 Prism Element LCM Interactive Demo
 =======================================

@@ -230,32 +230,6 @@ Testing the Application
 
    .. figure:: images/31.png
 
-Using Flow Visualization
-........................
-
-#. Return to **Prism Central** and select :fa:`bars` **> Virtual Infrastructure > Policies > Security Policies >**\ *Initials*-**Fiesta**.
-
-#. Verify that **Environment: Dev** appears as an inbound source. The source and line appear in yellow to indicate that traffic has been detected from your client VM.
-
-   .. figure:: images/32.png
-
-   Are there any other detected outbound traffic flows? Hover over these connections and determine what ports are in use.
-
-#. Click **Update** to edit the policy.
-
-   .. figure:: images/34.png
-
-#. Click **Next** and wait for the detected traffic flows to populate.
-
-#. Mouse over the **Environment: Dev** source that connects to **AppTier:**\ *Initials*-**Web** and click the :fa:`check` icon that appears.
-
-   .. figure:: images/35.png
-
-#. Click **OK** to complete adding the rule.
-
-   The **Environment: Dev** source should now turn blue, indicating that it is part of the policy. Mouse over the flow line and verify that both ICMP (ping traffic) and TCP port 80 appear.
-
-#. Click **Next > Save and Monitor** to update the policy.
 
 Applying Flow Policies
 ......................
